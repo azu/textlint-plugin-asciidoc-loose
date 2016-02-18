@@ -1,0 +1,39 @@
+{
+  "name": "textlint-plugin-asciidoc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azu/textlint-plugin-asciidoc.git"
+  },
+  "author": "azu",
+  "email": "azuciao@gmail.com",
+  "homepage": "https://github.com/azu/textlint-plugin-asciidoc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/azu/textlint-plugin-asciidoc/issues"
+  },
+  "version": "1.0.0",
+  "description": "textlint plugin for asciidoc/asciidoctor",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "textlint",
+    "plugin",
+    "asciidoc"
+  ],
+  "dependencies": {
+    "vscode-textmate": "^1.0.11"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-preset-es2015": "^6.5.0",
+    "espower-babel": "^4.0.1",
+    "mocha": "^2.4.5",
+    "power-assert": "^1.2.0"
+  }
+}
