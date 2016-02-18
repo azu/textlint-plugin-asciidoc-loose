@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import {parse, createTokenStream} from "../src/textlint-plugin-asciidoc";
+import {parse} from "../src/textlint-plugin-asciidoc";
 import {createTokenStream} from "../src/token-stream";
 import * as fs from "fs";
 describe("textlint-plugin-asciidoc", function () {

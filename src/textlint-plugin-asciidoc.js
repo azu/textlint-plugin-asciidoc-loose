@@ -1,9 +1,6 @@
 // LICENSE : MIT
 "use strict";
 import {createTokenStream} from "./token-stream";
-import {Registry} from 'vscode-textmate';
-const registry = new Registry();
-const grammar = registry.loadGrammarFromPathSync(__dirname + '/syntax/Asciidoctor.tmLanguage');
 const identity = (arg) => {
     return arg;
 };
@@ -13,47 +10,41 @@ class Traverser {
         this.tokens = createTokenStream(text);
     }
 
-    traverse({enter = identity, visit = identity, leave = identity}) {
-        var ruleStack = null;
-        let lineStartIndex = 0;
-        const workList = [];
-        const leaveList = [];
+    /*
+        3
+        |
+            2
+            |
+        3
+        |
+     */
+    traverse({enter = identity, leave = identity}) {
         let lastToken = null;
-        this.lines.forEach(line => {
-            // prev rule stack
-            const parsed = grammar.tokenizeLine(line, ruleStack);
-            for (let i = 0; i < parsed.tokens.length; i++) {
-                const token = parsed.tokens[i];
-                token.startIndex += lineStartIndex;
-                token.endIndex += lineStartIndex;
-                if (!lastToken) {
-                    enter(token);
-                    lastToken = token;
-                    continue;
-                }
-                // scopesが減ったらenter/増えたらleave
-                if (token.scopes.length < lastToken.scopes.length) {
-                    const parentToken = leaveList[leaveList.length - 1];
-                    leaveList.push(token);
-                    enter(token, parentToken);
-                }
-                if (token.scopes.length > lastToken.scopes.length) {
-                    leaveList.pop();
-                    const parentToken = leaveList[leaveList.length - 1];
-                    leave(token, parentToken);
-                }
-                if (token.scopes.length === lastToken.scopes.length) {
-                    const parentToken = leaveList[leaveList.length - 1];
-                    enter(token, parentToken);
-                }
-                lastToken = token;
+        const scopeStack = [];
+        this.tokens.forEach(token => {
+            // level, high near root
+            const currentLevel = token.scopes.length;
+            const prevLevel = lastToken ? lastToken.scopes.length : 0;
+            const parentScope = scopeStack[scopeStack.length - 1];
+            if (currentLevel < prevLevel) {
+                // enter
+                enter(token, parentScope);
+                scopeStack.push(token);
+            } else if (currentLevel > prevLevel) {
+                leave(token, parentScope);
+                scopeStack.pop();
+            } else if (currentLevel === prevLevel) {
+                enter(token, parentScope);
             }
-            ruleStack = parsed.ruleStack;
-            lineStartIndex += (line.length + 1);
+            // preserve
+            lastToken = token;
         });
 
-        if (leaveList.length > 0) {
-            leave(lastToken);
+        // finish
+        while (scopeStack.length > 0) {
+            const lowestScopeToken = scopeStack.pop();
+            const parentScope = scopeStack[scopeStack.length - 1];
+            leave(lowestScopeToken, parentScope);
         }
     }
 }
@@ -68,37 +59,32 @@ export function parse(text) {
     ]
      */
     const traverser = new Traverser(text);
-    let stack = [];
-    let rootNode = {children: []};
+    let rootNode = {children: [], scopes: []};
     let parentNode = null;
-    let currentNode = null;
-    let currentNodeChildren = [];
     traverser.traverse({
         enter(node, parent){
-            if (parent) {
-                console.log(parent);
-            }
-            if (parentNode === parent) {
-                currentNodeChildren.push(node)
-            } else {
-                parentNode = parent || rootNode;
-                currentNode = node;
-                currentNodeChildren = [];
-            }
-        },
-        visit(node){
-            currentNodeChildren.push(node);
-        },
-        leave(node){
+            parentNode = parent || rootNode;
             if (!parentNode.children) {
                 parentNode.children = [];
             }
-            if (currentNodeChildren.length) {
-                currentNode.children = currentNodeChildren.slice();
+            parentNode.children.push(node);
+            if (parentNode.endIndex < node.endIndex) {
+                parentNode.endIndex = node.endIndex;
             }
-            parentNode.children.push(currentNode);
+        },
+        leave(node, parent){
+            parentNode = parent || rootNode;
+            if (!parentNode.children) {
+                parentNode.children = [];
+            }
+            parentNode.children.push(node);
+            if (parentNode.endIndex < node.endIndex) {
+                parentNode.endIndex = node.endIndex;
+            }
         }
     });
+
+
     //console.log(JSON.stringify(rootNode.children.map(node => {
     //    delete node.scopes;
     //    node.children && node.children.forEach(n => {
@@ -107,5 +93,15 @@ export function parse(text) {
     //    return node;
     //}), null, 3));
     //console.log(JSON.stringify(rootNode, null, 2));
+    var traverse = require('traverse');
+    rootNode.scopes = ["Root"];
+    traverse(rootNode).forEach(function (x) {
+        const notLeaf = this.notLeaf;
+        if (notLeaf && !Array.isArray(x)) {
+            //console.log(new Array(this.level).join("\t") + x.scopes[x.scopes.length - 1]);
+            console.log(new Array(this.level).join("\t") + x.scopes[x.scopes.length - 1] + "\t" + text.slice(x.startIndex, x.endIndex).slice(0, 5));
+        }
+    });
+
     console.log("");
 }
