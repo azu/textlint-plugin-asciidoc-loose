@@ -1,0 +1,199 @@
+{
+  "children": [
+    {
+      "startIndex": 0,
+      "endIndex": 18,
+      "children": [
+        {
+          "startIndex": 1,
+          "endIndex": 2,
+          "raw": " "
+        },
+        {
+          "startIndex": 2,
+          "endIndex": 18,
+          "raw": "Hello, AsciiDoc!"
+        }
+      ],
+      "raw": "= Hello, AsciiDoc!"
+    },
+    {
+      "startIndex": 19,
+      "endIndex": 48,
+      "raw": "Doc Writer <doc@example.com>\n"
+    },
+    {
+      "startIndex": 48,
+      "endIndex": 49,
+      "raw": "\n"
+    },
+    {
+      "startIndex": 49,
+      "endIndex": 99,
+      "children": [
+        {
+          "startIndex": 68,
+          "endIndex": 87,
+          "raw": "http://asciidoc.org"
+        },
+        {
+          "startIndex": 87,
+          "endIndex": 88,
+          "raw": "["
+        },
+        {
+          "startIndex": 88,
+          "endIndex": 96,
+          "raw": "AsciiDoc"
+        },
+        {
+          "startIndex": 96,
+          "endIndex": 97,
+          "raw": "]"
+        },
+        {
+          "startIndex": 97,
+          "endIndex": 99,
+          "raw": ".\n"
+        }
+      ],
+      "raw": "An introduction to http://asciidoc.org[AsciiDoc].\n"
+    },
+    {
+      "startIndex": 99,
+      "endIndex": 100,
+      "raw": "\n"
+    },
+    {
+      "startIndex": 100,
+      "endIndex": 102,
+      "raw": "=="
+    },
+    {
+      "startIndex": 102,
+      "endIndex": 116,
+      "children": [
+        {
+          "startIndex": 103,
+          "endIndex": 116,
+          "raw": "First Section"
+        }
+      ],
+      "raw": " First Section"
+    },
+    {
+      "startIndex": 117,
+      "endIndex": 118,
+      "raw": "\n"
+    },
+    {
+      "startIndex": 118,
+      "endIndex": 119,
+      "raw": "*"
+    },
+    {
+      "startIndex": 119,
+      "endIndex": 127,
+      "children": [
+        {
+          "startIndex": 120,
+          "endIndex": 127,
+          "raw": "item 1\n"
+        }
+      ],
+      "raw": " item 1\n"
+    },
+    {
+      "startIndex": 127,
+      "endIndex": 128,
+      "raw": "*"
+    },
+    {
+      "startIndex": 128,
+      "endIndex": 136,
+      "children": [
+        {
+          "startIndex": 129,
+          "endIndex": 136,
+          "raw": "item 2\n"
+        }
+      ],
+      "raw": " item 2\n"
+    },
+    {
+      "startIndex": 136,
+      "endIndex": 137,
+      "raw": "\n"
+    },
+    {
+      "startIndex": 137,
+      "endIndex": 152,
+      "children": [
+        {
+          "startIndex": 139,
+          "endIndex": 150,
+          "raw": "app-listing"
+        },
+        {
+          "startIndex": 150,
+          "endIndex": 152,
+          "raw": "]]"
+        }
+      ],
+      "raw": "[[app-listing]]"
+    },
+    {
+      "startIndex": 153,
+      "endIndex": 154,
+      "raw": "["
+    },
+    {
+      "startIndex": 154,
+      "endIndex": 165,
+      "raw": "source,ruby"
+    },
+    {
+      "startIndex": 167,
+      "endIndex": 168,
+      "raw": "."
+    },
+    {
+      "startIndex": 168,
+      "endIndex": 175,
+      "raw": "app.rb\n"
+    },
+    {
+      "startIndex": 175,
+      "endIndex": 180,
+      "raw": "----\n"
+    },
+    {
+      "startIndex": 180,
+      "endIndex": 233,
+      "children": [
+        {
+          "startIndex": 198,
+          "endIndex": 199,
+          "raw": "\n"
+        },
+        {
+          "startIndex": 199,
+          "endIndex": 212,
+          "raw": "get '/hi' do\n"
+        },
+        {
+          "startIndex": 212,
+          "endIndex": 229,
+          "raw": "  \"Hello World!\"\n"
+        },
+        {
+          "startIndex": 229,
+          "endIndex": 233,
+          "raw": "end\n"
+        }
+      ],
+      "raw": "require 'sinatra'\n\nget '/hi' do\n  \"Hello World!\"\nend\n"
+    }
+  ],
+  "raw": "= Hello, AsciiDoc!\nDoc Writer <doc@example.com>\n\nAn introduction to http://asciidoc.org[AsciiDoc].\n\n== First Section\n\n* item 1\n* item 2\n\n[[app-listing]]\n[source,ruby]\n.app.rb\n----\nrequire 'sinatra'\n\nget '/hi' do\n  \"Hello World!\"\nend\n----"
+}
