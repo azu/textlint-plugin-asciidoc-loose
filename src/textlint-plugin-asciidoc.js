@@ -2,9 +2,11 @@
 "use strict";
 import {createTokenStream} from "./token-stream";
 import {Traverser} from "./traverse"
+import StructuredSource  from "structured-source";
 export function parse(text) {
     const tokens = createTokenStream(text);
     const traverser = new Traverser(tokens);
+    const source = new StructuredSource(text);
     let rootNode = {children: [], scopes: []};
     let parentNode = null;
     traverser.traverse({
@@ -16,16 +18,17 @@ export function parse(text) {
             parentNode.children.push(node);
             if (parentNode.endIndex < node.endIndex) {
                 parentNode.endIndex = node.endIndex;
+                parentNode.loc = {
+                    start: node.loc.start,
+                    end: source.indexToPosition(parentNode.endIndex)
+                }
             }
-
-        },
-        leave(node, parent){
         }
     });
 
 
     function remove(node) {
-        delete node.scopes;
+        //delete node.scopes;
         delete node.loc;
         return node;
     }
@@ -39,7 +42,6 @@ export function parse(text) {
     }
 
     rootNode = reqRemove(rootNode);
-    console.log(JSON.stringify(rootNode, null, 3));
     //console.log(JSON.stringify(rootNode, null, 2));
     //var traverse = require('traverse');
     //rootNode.scopes = ["Root"];
@@ -50,6 +52,5 @@ export function parse(text) {
     //        console.log(new Array(this.level).join("\t") + x.scopes[x.scopes.length - 1] + "\t" + text.slice(x.startIndex, x.endIndex).slice(0, 5));
     //    }
     //});
-
-    console.log("");
+    return rootNode;
 }

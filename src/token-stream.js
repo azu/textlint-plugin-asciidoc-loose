@@ -3,7 +3,7 @@
 import SourceStructure from "structured-source";
 import {Registry} from 'vscode-textmate';
 const registry = new Registry();
-const grammar = registry.loadGrammarFromPathSync(__dirname + '/syntax/Asciidoctor.tmLanguage');
+const grammar = registry.loadGrammarFromPathSync(__dirname + '/../syntax/Asciidoctor.tmLanguage');
 export function createTokenStream(text) {
     const source = new SourceStructure(text);
     const tokenList = [];

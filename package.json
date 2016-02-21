@@ -13,11 +13,14 @@
   },
   "version": "1.0.0",
   "description": "textlint plugin for asciidoc/asciidoctor",
-  "main": "index.js",
+  "main": "lib/textlint-plugin-asciidoc.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
+    "build": "babel src --out-dir lib --source-maps",
+    "watch": "babel src --out-dir lib --watch --source-maps",
+    "prepublish":"npm run --if-present build",
     "test": "mocha"
   },
   "keywords": [
