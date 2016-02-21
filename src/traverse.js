@@ -106,21 +106,39 @@ const inlineBlockNodeNameList = [
     }
 
 ];
-export class Traverser {
+class TokenSeeker {
     constructor(tokens) {
         this.tokens = tokens;
+        this._lookIndex = 0;
+        this._lastIndex = this.tokens.length;
+    }
+
+    hasNextToken() {
+        return this._lookIndex < this._lastIndex;
+    }
+
+    nextToken() {
+        var token = this.tokens[this._lookIndex];
+        this._lookIndex++;
+        return token;
+    }
+}
+export class Traverser {
+    constructor(tokens) {
+        this.seeker = new TokenSeeker(tokens);
     }
 
     traverse({enter = identity, leave = identity}) {
         const currentLineStack = [];
         const currentBlockStack = [];
         let isInBlock = false;
-        this.tokens.forEach(token => {
+        while (this.seeker.hasNextToken()) {
+            const token = this.seeker.nextToken();
             // Block Element
             if (blocker.isBegin(token)) {
                 isInBlock = true;
                 enter(token);
-                return;
+                continue;
             } else if (blocker.isEnd(token)) {
                 isInBlock = false;
                 const parentToken = currentBlockStack[0];
@@ -129,12 +147,12 @@ export class Traverser {
                     leave(lastToken, parentToken);
                 }
                 leave(token);
-                return;
+                continue;
             } else if (isInBlock) {
                 const parentToken = currentBlockStack[0];
                 currentBlockStack.push(token);
                 enter(token, parentToken);
-                return;
+                continue;
             }
             // Inline Block
             if (testInlineBlock(token)) {
@@ -151,12 +169,11 @@ export class Traverser {
                 const parentToken = currentLineStack[0];
                 currentLineStack.push(token);
                 enter(token, parentToken);
-            }else{
+            } else {
                 const parentToken = currentLineStack[0];
                 enter(token, parentToken);
             }
-        });
-
+        }
         // finish
         while (currentLineStack.length > 0) {
             const lastToken = currentLineStack.pop();
