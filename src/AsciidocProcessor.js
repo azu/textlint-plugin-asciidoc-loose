@@ -1,6 +1,6 @@
 // LICENSE : MIT
 "use strict";
-import {parse} from "parse-to-ast";
+import {parse} from "./parse-to-ast";
 export default class AsciidocProcessor {
     constructor(config) {
         this.config = config;

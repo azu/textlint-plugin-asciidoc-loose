@@ -55,6 +55,7 @@ export default class NodeBuilder {
     }
 
     builtAST() {
+        this.wrapStrWithParagraph();
         this.AST.children.forEach((node) => {
             if (node.type == "Paragraph") {
                 fixParagraphNode(node, this.text);

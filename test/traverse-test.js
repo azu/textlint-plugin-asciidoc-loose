@@ -1,6 +1,5 @@
 import assert from "power-assert";
 import {createTokenStream} from "../src/token-stream";
-import * as fs from "fs";
 import Dumper from "./helper/Duper";
 function checkDump(dump, expected) {
     assert.equal(normalize(dump), normalize(expected));
