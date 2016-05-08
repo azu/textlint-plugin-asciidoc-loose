@@ -5,6 +5,17 @@ import {Traverser} from "./traverse"
 import StructuredSource  from "structured-source";
 import NodeBuilder from "./NodeBuilder";
 export function parse(text) {
+    /*
+    Work Flow
+    1. Parse text as tokens
+    2. Traverse token
+    3. Build AST from token
+    
+    Limitation:
+    
+    Token is based on textmate bundle.
+    It is RegExp based.
+     */
     const tokens = createTokenStream(text);
     const traverser = new Traverser(tokens);
     const source = new StructuredSource(text);
