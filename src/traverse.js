@@ -61,7 +61,31 @@ class Blocker {
         const endNode = this.endNode(token);
         return endNode !== undefined;
     }
+}
+class InlineBlocker {
+    constructor({inlineBlockNodeNameList}) {
+        this.inlineBlockNodeNameList = inlineBlockNodeNameList;
+    }
 
+    inlineNode(node) {
+        const matchNode = this.inlineBlockNodeNameList.filter(({begin}) => {
+            const scopes = node.scopes;
+            return begin.every(scopeName => {
+                return scopes.indexOf(scopeName) !== -1;
+            });
+        });
+        return matchNode.length !== 0 ? matchNode[0] : null;
+    }
+
+    getNodeType(node) {
+        const inlineNode = this.inlineNode(node);
+        return inlineNode !== null ? inlineNode.type : null;
+    }
+
+    testInlineBlock(node) {
+        const inlineNode = this.inlineNode(node);
+        return inlineNode !== null;
+    };
 }
 const blockNodeNameList = [
     {
@@ -131,13 +155,8 @@ const blockNodeNameList = [
         "end": "constant.delimiter.block.open.end.asciidoc"
     }
 ];
-const testInlineBlock = (node) => {
-    return inlineBlockNodeNameList.some(({begin}) => {
-        const scopes = node.scopes;
-        return begin.every(scopeName => {
-            return scopes.indexOf(scopeName) !== -1;
-        });
-    });
+const getStrType = (node) => {
+    return node.scopes.join(",") === ['text.asciidoc'].join(",") ? "Str" : null;
 };
 const inlineBlockNodeNameList = [
     // #section_titles
@@ -181,9 +200,11 @@ export class Traverser {
         const currentLineStack = [];
         const currentBlockStack = [];
         const blocker = new Blocker({blockNodeNameList});
+        const inlineBlocker = new InlineBlocker({inlineBlockNodeNameList})
         let isInBlock = false;
         while (this.seeker.hasNextToken()) {
             const token = this.seeker.nextToken();
+            token.type = blocker.getBeginType(token) || blocker.getEndType(token) || inlineBlocker.getNodeType(token) || getStrType(token);
             // Block Element
             if (blocker.isBegin(token)) {
                 isInBlock = true;
@@ -219,12 +240,13 @@ export class Traverser {
                 continue;
             }
             // Inline Block
-            if (testInlineBlock(token)) {
+            if (inlineBlocker.testInlineBlock(token)) {
                 currentLineStack.push(token);
                 enter({
                     current: token,
                     type: blocker.getBeginType(token)
                 });
+                continue;
             } else if (currentLineStack.length > 0) {
                 const firstToken = currentLineStack[0];
                 if (firstToken.loc.start.line !== token.loc.start.line) {
@@ -241,9 +263,11 @@ export class Traverser {
                 currentLineStack.push(token);
                 enter({
                     current: token,
-                    parent: parentToken,
-                    type: blocker.getBeginType(token)
+                    parent: parentToken
                 });
+
+                continue;
+
             } else {
                 const parentToken = currentLineStack[0];
                 enter({
@@ -251,6 +275,7 @@ export class Traverser {
                     parent: parentToken,
                     type: blocker.getBeginType(token)
                 });
+                continue;
             }
         }
         // finish

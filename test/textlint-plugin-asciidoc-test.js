@@ -2,7 +2,7 @@
 "use strict";
 import assert from "power-assert";
 import * as fs from "fs";
-import {parse} from "../src/textlint-plugin-asciidoc";
+import {parse} from "../src/textlint-plugin-asciidoc-loose";
 const util = require("util");
 describe("textlint-plugin-asciidoc", function () {
     it("should ", function () {
