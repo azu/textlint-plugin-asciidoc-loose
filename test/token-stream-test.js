@@ -3,7 +3,7 @@
 import assert from "power-assert";
 import * as fs from "fs";
 import {createTokenStream} from "../src/token-stream";
-describe("textlint-plugin-asciidoc", function () {
+describe("token-stream", function () {
     describe("createTokenStream", function () {
         it("should return token stream", function () {
             const text = `= Hello, AsciiDoc!

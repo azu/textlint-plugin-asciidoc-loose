@@ -19,10 +19,12 @@ export default class Dumper {
         const traverser = new Traverser(toknes);
         traverser.traverse({
             enter(node) {
-                dumper.log(`enter - "${node.scopes.join('", "')}"`);
+                const {startIndex, endIndex} = node;
+                dumper.log(`enter - [${startIndex}, ${endIndex}] - "${node.scopes.join('", "')}"`);
             },
             leave(node) {
-                dumper.log(`leave - "${node.scopes.join('", "')}"`);
+                const {startIndex, endIndex} = node;
+                dumper.log(`leave - [${startIndex}, ${endIndex}] - "${node.scopes.join('", "')}"`);
             }
         });
         return dumper.result();

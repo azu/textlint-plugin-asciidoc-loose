@@ -68,15 +68,15 @@ describe("Traverse", function () {
         ];
         var dump = Dumper.dump(tokens);
         checkDump(dump, `
-enter - "text.asciidoc", "support.variable.attributelist.asciidoc", "punctuation.definition.attributelistline.begin.asciidoc"
-enter - "text.asciidoc", "support.variable.attributelist.asciidoc"
-leave - "text.asciidoc", "support.variable.attributelist.asciidoc"
-leave - "text.asciidoc", "support.variable.attributelist.asciidoc", "punctuation.definition.attributelistline.end.asciidoc"
+enter - [0, 1] - "text.asciidoc", "support.variable.attributelist.asciidoc", "punctuation.definition.attributelistline.begin.asciidoc"
+enter - [1, 18] - "text.asciidoc", "support.variable.attributelist.asciidoc"
+leave - [1, 18] - "text.asciidoc", "support.variable.attributelist.asciidoc"
+leave - [18, 19] - "text.asciidoc", "support.variable.attributelist.asciidoc", "punctuation.definition.attributelistline.end.asciidoc"
 
-enter - "text.asciidoc", "meta.embedded.block.listing.asciidoc", "constant.delimiter.listing.begin.asciidoc"
-enter - "text.asciidoc", "meta.embedded.block.listing.asciidoc", "source.block.listing.content.asciidoc"
-leave - "text.asciidoc", "meta.embedded.block.listing.asciidoc", "source.block.listing.content.asciidoc"
-leave - "text.asciidoc", "meta.embedded.block.listing.asciidoc", "constant.delimiter.listing.end.asciidoc"
+enter - [20, 25] - "text.asciidoc", "meta.embedded.block.listing.asciidoc", "constant.delimiter.listing.begin.asciidoc"
+enter - [25, 38] - "text.asciidoc", "meta.embedded.block.listing.asciidoc", "source.block.listing.content.asciidoc"
+leave - [25, 38] - "text.asciidoc", "meta.embedded.block.listing.asciidoc", "source.block.listing.content.asciidoc"
+leave - [38, 43] - "text.asciidoc", "meta.embedded.block.listing.asciidoc", "constant.delimiter.listing.end.asciidoc"
         `);
 
     });
@@ -121,18 +121,18 @@ leave - "text.asciidoc", "meta.embedded.block.listing.asciidoc", "constant.delim
         ];
         var dump = Dumper.dump(tokens);
         checkDump(dump, `
-enter - "text.asciidoc", "markup.heading.level.0.asciidoc", "punctuation.definition.heading.asciidoc"
-enter - "text.asciidoc", "markup.heading.level.0.asciidoc"
-enter - "text.asciidoc", "markup.heading.level.0.asciidoc", "entity.name.section.asciidoc"
+enter - [0, 1] - "text.asciidoc", "markup.heading.level.0.asciidoc", "punctuation.definition.heading.asciidoc"
+enter - [1, 2] - "text.asciidoc", "markup.heading.level.0.asciidoc"
+enter - [2, 18] - "text.asciidoc", "markup.heading.level.0.asciidoc", "entity.name.section.asciidoc"
 
-leave - "text.asciidoc", "markup.heading.level.0.asciidoc", "entity.name.section.asciidoc"
-leave - "text.asciidoc", "markup.heading.level.0.asciidoc"
-leave - "text.asciidoc", "markup.heading.level.0.asciidoc", "punctuation.definition.heading.asciidoc"
+leave - [2, 18] - "text.asciidoc", "markup.heading.level.0.asciidoc", "entity.name.section.asciidoc"
+leave - [1, 2] - "text.asciidoc", "markup.heading.level.0.asciidoc"
+leave - [0, 1] - "text.asciidoc", "markup.heading.level.0.asciidoc", "punctuation.definition.heading.asciidoc"
 
-enter - "text.asciidoc"
-leave - "text.asciidoc"
-enter - "text.asciidoc"
-leave - "text.asciidoc"
+enter - [19, 25] - "text.asciidoc"
+leave - [19, 25] - "text.asciidoc"
+enter - [25, 31] - "text.asciidoc"
+leave - [25, 31] - "text.asciidoc"
         `);
 
     });
