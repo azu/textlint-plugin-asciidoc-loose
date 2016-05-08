@@ -32,8 +32,7 @@ This plugin recognize these file extension as asciidoc file.
 - ".adoc",
 - ".asc"
 
-- http://asciidoctor.org/docs/asciidoc-recommended-practices/
-
+http://asciidoctor.org/docs/asciidoc-recommended-practices/
 
 ## Tests
 
