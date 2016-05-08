@@ -10,16 +10,17 @@ export function parse(text) {
     let rootNode = {children: [], scopes: []};
     let parentNode = null;
     traverser.traverse({
-        enter(node, parent){
+        enter({current, parent, type}){
             parentNode = parent || rootNode;
             if (!parentNode.children) {
                 parentNode.children = [];
             }
-            parentNode.children.push(node);
-            if (parentNode.endIndex < node.endIndex) {
-                parentNode.endIndex = node.endIndex;
+            current.type = type;
+            parentNode.children.push(current);
+            if (parentNode.endIndex < current.endIndex) {
+                parentNode.endIndex = current.endIndex;
                 parentNode.loc = {
-                    start: node.loc.start,
+                    start: current.loc.start,
                     end: source.indexToPosition(parentNode.endIndex)
                 }
             }
