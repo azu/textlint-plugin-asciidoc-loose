@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/azu/textlint-plugin-asciidoc-loose/issues"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "textlint plugin for asciidoc/asciidoctor",
   "main": "lib/textlint-plugin-asciidoc-loose.js",
   "files": [
