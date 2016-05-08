@@ -30,6 +30,7 @@ const blocker = {
 };
 const blockNodeNameList = [
     {
+        "name": "List",
         "begin": "punctuation.definition.attributelistline.begin.asciidoc",
         "end": "punctuation.definition.attributelistline.end.asciidoc"
     },
