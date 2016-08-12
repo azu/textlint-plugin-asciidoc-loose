@@ -34,6 +34,32 @@ This plugin recognize these file extension as asciidoc file.
 
 http://asciidoctor.org/docs/asciidoc-recommended-practices/
 
+## FAQ
+
+### npm ERR! oniguruma@6.1.0 install: `node-gyp rebuild`
+
+Travis CI fail to build.
+
+You can fix this issue by adding following setting to `.travis.yml`
+
+```yml
+os:
+- linux
+sudo: false
+language: node_js
+node_js:
+- "stable"
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+install:
+- export CXX=g++-4.8
+- npm install
+```
+
 ## Tests
 
     npm test
